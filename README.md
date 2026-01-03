@@ -2,7 +2,7 @@
 
 **TerraDyne** is an experimental, high-performance, native C++ landscape plugin for **Unreal Engine 5.7**. It decouples physics from visuals to allow for infinite real-time runtime modification—digging, raising, and painting—while maintaining cinematic visual fidelity using Virtual Heightfield Mesh (VHFM) displacement.
 
-> **Status:** Production Ready (Native UE 5.7)
+> **Status:** WIP, Not Production Ready (Native UE 5.7)
 > **Dependencies:** Geometry Scripting, Virtual Heightfield Mesh
 
 ![TerraDyne Banner](https://via.placeholder.com/1000x200?text=TerraDyne+Dynamic+Terrain+System)
