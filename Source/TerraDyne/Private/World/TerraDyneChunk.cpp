@@ -1,5 +1,6 @@
 #include "World/TerraDyneChunk.h" // MUST BE FIRST INCLUDE
 #include "IO/TerraDyneAsyncSaver.h"
+#include "Rendering/Texture2DResource.h"
 
 // Engine Includes
 #include "GeometryScript/MeshPrimitiveFunctions.h"
@@ -12,6 +13,7 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "TimerManager.h"
 #include "Async/Async.h"
+#include "Engine/Canvas.h"
 
 // TerraDyne Includes
 #include "Core/TerraDyneSubsystem.h"
@@ -277,6 +279,57 @@ void ATerraDyneChunk::SyncPhysicsGeometry()
 
 void ATerraDyneChunk::UpdateVisualTexture()
 {
+	// If the RT isn't ready or cache is empty, abort
+	if (!HeightRT || HeightCache.Num() == 0) return;
+
+	// 1. Prepare Data
+	TArray<FFloat16Color> RawData;
+	RawData.SetNum(HeightCache.Num());
+
+	for (int32 i = 0; i < HeightCache.Num(); i++)
+	{
+		// Write Height directly to Red Channel
+		// Assuming Master Material reads R channel for WPO
+		RawData[i] = FFloat16Color(FLinearColor(HeightCache[i], 0, 0, 1));
+	}
+
+	// 2. Create Transient Texture
+	UTexture2D* TempTex = UTexture2D::CreateTransient(Resolution, Resolution, PF_FloatRGBA);
+	if (TempTex)
+	{
+		// Disable compression for accuracy
+		TempTex->CompressionSettings = TC_HDR;
+		TempTex->SRGB = 0;
+		TempTex->AddToRoot(); // Prevent GC during operation
+
+		// 3. Write Data
+		FTexture2DMipMap& Mip = TempTex->GetPlatformData()->Mips[0];
+		void* Data = Mip.BulkData.Lock(LOCK_READ_WRITE);
+		FMemory::Memcpy(Data, RawData.GetData(), RawData.Num() * sizeof(FFloat16Color));
+		Mip.BulkData.Unlock();
+
+		TempTex->UpdateResource();
+
+		// 4. Draw to Render Target (The Blit)
+		// We use Kismet Library to copy the texture into our RT
+		UKismetRenderingLibrary::DrawMaterialToRenderTarget(this, HeightRT, nullptr); // Clear
+
+		// Create a Canvas to draw the texture 1:1
+		UCanvas* Canvas;
+		FVector2D Size;
+		FDrawToRenderTargetContext Context;
+		UKismetRenderingLibrary::BeginDrawCanvasToRenderTarget(this, HeightRT, Canvas, Size, Context);
+
+		if (Canvas)
+		{
+			// Draw normalized UV 0..1
+			Canvas->K2_DrawTexture(TempTex, FVector2D(0, 0), Size, FVector2D(0, 0), FVector2D(1, 1), FLinearColor::White, EBlendMode::BLEND_Opaque);
+		}
+
+		UKismetRenderingLibrary::EndDrawCanvasToRenderTarget(this, Context);
+
+		TempTex->RemoveFromRoot();
+	}
 }
 
 void ATerraDyneChunk::SetMaterial(UMaterialInterface* InMaterial)
