@@ -5,6 +5,8 @@ public class TerraDyne : ModuleRules
 	public TerraDyne(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+		bUseUnity = false;
+
 
 		// Core dependencies
 		PublicDependencyModuleNames.AddRange(new string[] { 
@@ -15,7 +17,8 @@ public class TerraDyne : ModuleRules
 			"Landscape",
 			"RenderCore",
 			"RHI",
-			"GeometryCore"
+			"GeometryCore",
+			"UMG"
 		});
 
 		// Plugin dependencies (Must be enabled in .uproject)
@@ -26,7 +29,9 @@ public class TerraDyne : ModuleRules
 
 		// Private dependencies
 		PrivateDependencyModuleNames.AddRange(new string[] {
-			"GeometryScriptingCore"
+			"GeometryScriptingCore",
+			"Slate",
+            "SlateCore"
 		});
 	}
 }

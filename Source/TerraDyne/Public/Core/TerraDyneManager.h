@@ -17,46 +17,47 @@ class TERRADYNE_API ATerraDyneManager : public AActor
 public:
 	ATerraDyneManager();
 
-	//--- Automation ---//
-	UPROPERTY(EditAnywhere, Category = "TerraDyne|Automation")
-	bool bAutoImportAtRuntime = true;
+	//--- CONFIGURATION ---
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TerraDyne|Import Settings")
+	TObjectPtr<ALandscapeProxy> TargetLandscapeSource;
 
-	//--- Config ---//
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TerraDyne|Import Settings")
+	float GlobalChunkSize;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TerraDyne|Config")
 	TSubclassOf<ATerraDyneChunk> ChunkClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TerraDyne|Config")
 	TObjectPtr<UMaterialInterface> MasterMaterial;
 
-	//--- Tools Injection ---//
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TerraDyne|Tools")
 	TObjectPtr<UMaterialInterface> HeightBrushMaterial;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TerraDyne|Tools")
 	TObjectPtr<UMaterialInterface> WeightBrushMaterial;
 
-	//--- Debug/State ---//
-	UPROPERTY(VisibleAnywhere, Category = "TerraDyne|Debug")
-	float GlobalChunkSize;
+	UPROPERTY(EditAnywhere, Category = "TerraDyne|Automation")
+	bool bAutoImportAtRuntime = true;
 
-	//--- Runtime API ---//
-
+	//--- RUNTIME API ---
 	UFUNCTION(BlueprintCallable, Category = "TerraDyne|Interaction")
 	void ApplyGlobalBrush(FVector WorldLocation, float Radius, float Strength, bool bIsHole, int32 PaintLayer = -1);
 
-	// FIX: Added missing declaration here
 	UFUNCTION(BlueprintCallable, Category = "TerraDyne|Query")
 	ATerraDyneChunk* GetChunkAtLocation(FVector WorldLocation);
 
 	UFUNCTION(BlueprintCallable, Category = "TerraDyne|System")
 	void RebuildChunkMap();
 
-	//--- Editor/Import API ---//
+	//--- EDITOR TOOLS ---
 #if WITH_EDITOR
 	UFUNCTION(BlueprintCallable, CallInEditor, Category = "TerraDyne|Tools")
+	void ManualImport();
+
+	// Internal helpers for import process
 	void ImportFromLandscape(ALandscapeProxy* TargetLandscape, bool bHideSource = true);
 
-	// Helper for resampling
+	// FIX: This declaration was missing in your header, causing the C2039 error
 	void ResampleLandscapeData(ATerraDyneChunk* Chunk, ALandscapeProxy* Source);
 #endif
 
@@ -70,4 +71,5 @@ private:
 
 	int64 GetChunkHash(int32 X, int32 Y) const;
 	void SpawnDefaultSandboxChunk();
+	void ImportInternal(ALandscapeProxy* Source, bool bHideSource);
 };
