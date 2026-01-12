@@ -138,4 +138,4 @@ The demo setup uses **Layer 1 (Green Channel)** as an Emissive Layer.
 
 ## 📝 License
 
-MIT. Code by Andras Gregori.
+GPL 3.0 License. Code by Andras Gregori.
