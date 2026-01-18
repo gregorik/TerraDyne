@@ -5,6 +5,8 @@
 > **Status:** WIP, Not Production Ready (Native UE 5.7)
 > **Dependencies:** Geometry Scripting, Virtual Heightfield Mesh
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C616ULD4)
+
 ![TerraDyne Banner](https://via.placeholder.com/1000x200?text=TerraDyne+Dynamic+Terrain+System)
 
 ## ✨ Key Features
