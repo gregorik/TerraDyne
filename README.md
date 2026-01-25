@@ -1,13 +1,12 @@
 # 🌍 TerraDyne: Dynamic Landscape System
+![image](https://img.shields.io/badge/-Unreal%20Engine-313131?style=for-the-badge&logo=unreal-engine&logoColor=blue) ![image](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=blue) ![image](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue) ![image](https://img.shields.io/badge/json-5E5C5C?style=for-the-badge&logo=json&logoColor=white) ![image](https://img.shields.io/badge/MIT-green?style=for-the-badge) ![alt text](https://img.shields.io/github/stars/gregorik/InstantOrganicCaves) ![alt text](https://img.shields.io/badge/Support-Patreon-red) [![YouTube](https://img.shields.io/badge/YouTube-Subscribe-red?style=flat&logo=youtube)](https://www.youtube.com/@agregori) [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C616ULD4)
 
 **TerraDyne** is an experimental, high-performance, native C++ landscape plugin for **Unreal Engine 5.7**. It decouples physics from visuals to allow for infinite real-time runtime modification—digging, raising, and painting—while maintaining cinematic visual fidelity using Virtual Heightfield Mesh (VHFM) displacement.
 
 > **Status:** WIP, Not Production Ready (Native UE 5.7)
 > **Dependencies:** Geometry Scripting, Virtual Heightfield Mesh
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C616ULD4)
-
-![TerraDyne Banner](https://via.placeholder.com/1000x200?text=TerraDyne+Dynamic+Terrain+System)
+![TerraDyne Banner (WIP)](https://via.placeholder.com/1000x200?text=TerraDyne+Dynamic+Terrain+System)
 
 ## ✨ Key Features
 
@@ -140,4 +139,4 @@ The demo setup uses **Layer 1 (Green Channel)** as an Emissive Layer.
 
 ## 📝 License
 
-GPL 3.0 License. Code by Andras Gregori.
+MIT. Code by Andras Gregori.
